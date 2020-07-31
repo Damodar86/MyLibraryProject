@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: MyLibrarySystem
+  datasource:
+    hikari:
+
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: damodar
+    password: damodar
+    url: jdbc:oracle:thin:@localhost:1521:xe
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+
+server:
+  port: 9010
+
+myCompany: Intellict

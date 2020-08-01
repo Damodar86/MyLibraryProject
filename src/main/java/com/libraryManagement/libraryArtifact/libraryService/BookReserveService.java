@@ -15,7 +15,7 @@ import com.libraryManagement.libraryArtifact.libraryRepository.BookRepository;
 import com.libraryManagement.libraryArtifact.libraryRepository.BookReserveRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -54,7 +54,7 @@ public class BookReserveService {
 
                     BookCheckOutEntity bookCheckOutEntity = bookCheckOutEntities.get();
 
-                    int reserveDays = LocalDateTime.now().compareTo(bookCheckOutEntity.getRenewalDate());
+                    int reserveDays = LocalDate.now().compareTo(bookCheckOutEntity.getRenewalDate());
 
                     if (reserveDays <= 0) {
 
@@ -63,7 +63,7 @@ public class BookReserveService {
                         BookReserveEntity bookReserveEntity = new BookReserveEntity();
                         bookReserveEntity.setAccount_Id(bookReserveModel.getMemberAccountId());
                         bookReserveEntity.setBookBarCode(bookReserveModel.getBookBarCode());
-                        bookReserveEntity.setReserveDate(LocalDateTime.now());
+                        bookReserveEntity.setReserveDate(LocalDate.now());
                         bookReserveEntity.setReservedStatus("Still Reserved");
                         bookReserveRepository.save(bookReserveEntity);
 

@@ -8,7 +8,7 @@ import com.libraryManagement.libraryArtifact.libraryRepository.BookCheckOutRepos
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Slf4j
@@ -28,7 +28,7 @@ public class BookRenewalService {
             BookCheckOutEntity bookCheckOutEntity1 = bookCheckOutEntity.get();
             if (bookCheckOutEntity1.getRenewalCount() < 3) {
                 log.info("entered into Renewal Count check Condition block");
-                bookCheckOutEntity1.setRenewalDate(LocalDateTime.now().plusDays(13));
+                bookCheckOutEntity1.setRenewalDate(LocalDate.now().plusDays(13));
                 bookCheckOutEntity1.setIssuedById("online");
                 bookCheckOutEntity1.setRenewalCount(bookCheckOutEntity1.getRenewalCount() + 1);
                 bookCheckOutRepository.save(bookCheckOutEntity1);

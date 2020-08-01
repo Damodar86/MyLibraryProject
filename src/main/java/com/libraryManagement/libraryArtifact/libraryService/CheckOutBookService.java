@@ -14,7 +14,7 @@ import com.libraryManagement.libraryArtifact.libraryRepository.BookRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -42,8 +42,8 @@ public class CheckOutBookService {
                     BookCheckOutEntity bookCheckOutEntity = new BookCheckOutEntity();
                     bookCheckOutEntity.setBookBarCode(bookEntity.getBarcode());
                     bookCheckOutEntity.setBorrowerAccountId(bookCheckOutModel.getAccountId());
-                    bookCheckOutEntity.setBorrowedDate(LocalDateTime.now());
-                    bookCheckOutEntity.setRenewalDate(LocalDateTime.now().plusDays(14));
+                    bookCheckOutEntity.setBorrowedDate(LocalDate.now());
+                    bookCheckOutEntity.setRenewalDate(LocalDate.now().plusDays(14));
                     bookCheckOutEntity.setIssuedById("ONLINE");
                     bookCheckOutEntity.setRenewalCount(0);
                     bookCheckOutRepository.save(bookCheckOutEntity);

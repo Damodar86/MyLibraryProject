@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -20,13 +20,13 @@ public class BookCheckOutEntity {
     private Long borrowerAccountId;
     @Id
     @Column(name = "BORROWED_DATE")
-    private LocalDateTime borrowedDate;
+    private LocalDate borrowedDate;
     @Column(name = "RENUAL_DATE")
-    private LocalDateTime renewalDate;
+    private LocalDate renewalDate;
     @Column(name = "ISSUED_BY_ID")
     private String issuedById;
     @Column(name = "RETURNED_DATE")
-    private LocalDateTime returnedDate;
+    private LocalDate returnedDate;
     @Column(name = "PENALITY")
    private int penality;
     @Column(name = "RENEWAL_COUNT")

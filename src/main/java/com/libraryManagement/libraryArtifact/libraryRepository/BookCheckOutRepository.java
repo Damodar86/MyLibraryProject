@@ -5,7 +5,7 @@ import com.libraryManagement.libraryArtifact.libraryEntity.BookCheckOutEntityPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,5 +16,5 @@ public interface BookCheckOutRepository extends JpaRepository<BookCheckOutEntity
     List<BookCheckOutEntity> findByBorrowerAccountId(Long account_Id);
     Optional<BookCheckOutEntity>findByBookBarCode(String barCode);
     List<BookCheckOutEntity>findByBookBarCodeOrIssuedById(String barCode,String issuedBy);
-    List<BookCheckOutEntity>findByBorrowedDateAndReturnedDateIsNull(LocalDateTime borrowedDate);
+    List<BookCheckOutEntity>findByBorrowedDateAndReturnedDateIsNull(LocalDate borrowedDate);
 }

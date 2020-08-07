@@ -15,35 +15,39 @@ import java.util.Optional;
 @Service
 public class BookRenewalService {
 
-    private BookCheckOutRepository bookCheckOutRepository;
+   private BookCheckOutRepository bookCheckOutRepository;
 
     public BookRenewalService(BookCheckOutRepository bookCheckOutRepository) {
         this.bookCheckOutRepository = bookCheckOutRepository;
     }
 
-    public String bookRenewalServiceMethod(BookRenewalModel bookrenewalmodel) throws LibraryException {
-        Optional<BookCheckOutEntity> bookCheckOutEntity = bookCheckOutRepository.findByBookBarCodeAndBorrowerAccountIdAndReturnedDateIsNull(bookrenewalmodel.getBarCode(), bookrenewalmodel.getAccountId());
-        if (bookCheckOutEntity.isPresent()) {
-            log.info("entered into bookCheckOutEntity is Present block");
-            BookCheckOutEntity bookCheckOutEntity1 = bookCheckOutEntity.get();
-            if (bookCheckOutEntity1.getRenewalCount() < 3) {
+    public String bookRenewalServiceMethod(BookRenewalModel bookRenewalModel) throws LibraryException{
+        Optional<BookCheckOutEntity> optionalBookCheckOutEntity = bookCheckOutRepository
+                .findByBookBarCodeAndBorrowerAccountIdAndReturnedDateIsNull(bookRenewalModel.getBarCode(), bookRenewalModel.getAccountId());
+        if(optionalBookCheckOutEntity.isPresent()){
+            BookCheckOutEntity bookCheckOutEntity = optionalBookCheckOutEntity.get();
+            if(bookCheckOutEntity.getRenewalCount() < 3){
                 log.info("entered into Renewal Count check Condition block");
-                bookCheckOutEntity1.setRenewalDate(LocalDate.now().plusDays(13));
-                bookCheckOutEntity1.setIssuedById("online");
-                bookCheckOutEntity1.setRenewalCount(bookCheckOutEntity1.getRenewalCount() + 1);
-                bookCheckOutRepository.save(bookCheckOutEntity1);
-            } else {
-                log.info(" entered in to renewal count check exception block ");
+                bookCheckOutEntity.setRenewalDate(LocalDate.now().plusDays(13));
+                bookCheckOutEntity.setIssuedById("online");
+                bookCheckOutEntity.setRenewalCount(bookCheckOutEntity.getRenewalCount() + 1);
+                bookCheckOutRepository.save(bookCheckOutEntity);
+                return "Successfully renewed your books " + bookRenewalModel.getBarCode() + " borrower_Id " + bookRenewalModel.getAccountId();
+            }else{
+                log.info("Renewal limit exceeded for book with barcode {}, accountId {} ", bookRenewalModel.getBarCode(), bookRenewalModel.getAccountId());
                 throw new LibraryException(LibraryErrorMessages.RENEWAL_LIMIT_EXCEEDED);
             }
-
-        } else {
-            log.info("entered into is present else block ");
+        }else{
+            log.info("There is no checkout entry for barcode {}, accountId {} ", bookRenewalModel.getBarCode(), bookRenewalModel.getAccountId());
             throw new LibraryException(LibraryErrorMessages.INVALID_GIVEN_BARCODE_AND_ACCOUNT_ID);
-
         }
-        return "Successfully renewed your books" + bookCheckOutEntity.get().getBookBarCode() + " borrower_Id" + bookCheckOutEntity.get().getBorrowerAccountId();
     }
+
+
+   /* public String bookRenewalServiceMethod(BookRenewalModel bookrenewalmodel) throws LibraryException {
+     return null;
+    }*/
 }
+
 
 

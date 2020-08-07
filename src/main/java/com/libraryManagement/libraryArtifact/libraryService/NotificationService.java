@@ -1,3 +1,4 @@
+/*
 package com.libraryManagement.libraryArtifact.libraryService;
 
 import com.libraryManagement.libraryArtifact.bookEnumPacakage.LibraryErrorMessages;
@@ -30,6 +31,7 @@ public class NotificationService {
     @Transactional
     public NotificationReturnModel notificationMethod(NotificationModel notificationModel) throws LibraryException {
         List<BookCheckOutEntity> bookCheckOutEntities = bookCheckOutRepository.findByBorrowedDateAndReturnedDateIsNull(notificationModel.getBorrowedDate());
+
         NotificationReturnModel notificationReturnModel = new NotificationReturnModel();
         if (CollectionUtils.isNotEmpty(bookCheckOutEntities)) {
             bookCheckOutEntities.forEach(bookCheckOutEntity -> {
@@ -42,7 +44,8 @@ public class NotificationService {
             });
                 int daysToNotification = LocalDate.now().compareTo(notificationReturnModel.getBookRenewalDate());
                 if (daysToNotification==-1) {
-                    NotificationEntity notificationEntity = new NotificationEntity();
+                   */
+/* NotificationEntity notificationEntity = new NotificationEntity();
                     notificationEntity.setAccountId(notificationReturnModel.getAccountId());
                     notificationEntity.setBookBarCode(notificationReturnModel.getBookBarCode());
                     notificationEntity.setBorrowedDate(notificationReturnModel.getBookBorrowDate());
@@ -50,7 +53,8 @@ public class NotificationService {
                     notificationEntity.setNotificationDate(LocalDate.now());
                     notificationEntity.setMessage(notificationReturnModel.getMessage());
 
-                    notificationRepository.save(notificationEntity);
+                    notificationRepository.save(notificationEntity);*//*
+
                 } else{
                     throw new LibraryException(LibraryErrorMessages.SORRY_THERE_ARE_NO_BOOKS);
                 }
@@ -65,3 +69,4 @@ public class NotificationService {
         return notificationReturnModel;
     }
 }
+*/

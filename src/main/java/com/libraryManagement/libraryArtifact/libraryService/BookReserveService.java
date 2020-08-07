@@ -1,8 +1,8 @@
 package com.libraryManagement.libraryArtifact.libraryService;
 
+import com.libraryManagement.libraryArtifact.bookEnumPacakage.AccountStatus;
 import com.libraryManagement.libraryArtifact.bookEnumPacakage.BookStatus;
 import com.libraryManagement.libraryArtifact.bookEnumPacakage.LibraryErrorMessages;
-import com.libraryManagement.libraryArtifact.libraryEntity.BookCheckOutEntity;
 import com.libraryManagement.libraryArtifact.libraryEntity.BookEntity;
 import com.libraryManagement.libraryArtifact.libraryEntity.BookReserveEntity;
 import com.libraryManagement.libraryArtifact.libraryEntity.LibraryAccountEntity;
@@ -13,6 +13,7 @@ import com.libraryManagement.libraryArtifact.libraryRepository.AccountRepository
 import com.libraryManagement.libraryArtifact.libraryRepository.BookCheckOutRepository;
 import com.libraryManagement.libraryArtifact.libraryRepository.BookRepository;
 import com.libraryManagement.libraryArtifact.libraryRepository.BookReserveRepository;
+import com.libraryManagement.libraryArtifact.util.Constants;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,63 +33,38 @@ public class BookReserveService {
         this.bookRepository = bookRepository;
         this.bookReserveRepository = bookReserveRepository;
     }
-
-    BookReserveReturnModel bookReserveReturnModel = new BookReserveReturnModel();
-
     public BookReserveReturnModel bookReserveMethod(BookReserveModel bookReserveModel) throws LibraryException {
+        Optional<LibraryAccountEntity> optLibraryAccountEntity = accountRepository.findByAccountIdAndPassword(bookReserveModel.getMemberAccountId(), bookReserveModel.getPassword());
+        if (optLibraryAccountEntity.isPresent()){
+            LibraryAccountEntity libraryAccountEntity = optLibraryAccountEntity.get();
+            if(libraryAccountEntity.getAccountStatus().equalsIgnoreCase(AccountStatus.Active.name())){
+                Optional<BookEntity> optionalBookEntity = bookRepository.findByBarcodeAndBookStatus(bookReserveModel.getBookBarCode(), BookStatus.Loaned.name());
+                if(optionalBookEntity.isPresent()){
+                    BookReserveEntity bookReserveEntity = new BookReserveEntity();
+                    bookReserveEntity.setAccount_Id(bookReserveModel.getMemberAccountId());
+                    bookReserveEntity.setBookBarCode(bookReserveModel.getBookBarCode());
+                    bookReserveEntity.setReserveDate(LocalDate.now());
+                    bookReserveEntity.setReservedStatus(Constants.RESERVED_STATUS);
+                    bookReserveRepository.save(bookReserveEntity);
 
-        Optional<LibraryAccountEntity> libraryAccountEntity = accountRepository.findByAccountIdAndPassword(bookReserveModel.getMemberAccountId(), bookReserveModel.getPassword());
-
-        if (libraryAccountEntity.isPresent()) {
-
-            LibraryAccountEntity libraryAccountEntity1 = libraryAccountEntity.get();
-
-            if (libraryAccountEntity1.getAccountStatus().equalsIgnoreCase("Active")) {
-
-                Optional<BookCheckOutEntity> bookCheckOutEntities = bookCheckOutRepository.findByBookBarCode(bookReserveModel.getBookBarCode());
-                Optional<BookEntity> bookEntity = bookRepository.findByBarcodeAndBookStatus(bookReserveModel.getBookBarCode(), BookStatus.Loaned.name());
-
-                if (bookCheckOutEntities.isPresent() && bookEntity.isPresent()) {
-
-                    BookEntity bookEntity2 = bookEntity.get();
-
-                    BookCheckOutEntity bookCheckOutEntity = bookCheckOutEntities.get();
-
-                    int reserveDays = LocalDate.now().compareTo(bookCheckOutEntity.getRenewalDate());
-
-                    if (reserveDays <= 0) {
-
-                        bookEntity2.setBookStatus(BookStatus.Reserved.name());
-                        bookRepository.save(bookEntity2);
-                        BookReserveEntity bookReserveEntity = new BookReserveEntity();
-                        bookReserveEntity.setAccount_Id(bookReserveModel.getMemberAccountId());
-                        bookReserveEntity.setBookBarCode(bookReserveModel.getBookBarCode());
-                        bookReserveEntity.setReserveDate(LocalDate.now());
-                        bookReserveEntity.setReservedStatus("Still Reserved");
-                        bookReserveRepository.save(bookReserveEntity);
-
-                        bookReserveReturnModel.setBookBarCode(bookReserveModel.getBookBarCode());
-                        bookReserveReturnModel.setBookStatus(BookStatus.Reserved);
-
-
-                    }
-
-
-                } else {
+                    BookEntity bookEntity = optionalBookEntity.get();
+                    bookEntity.setBookStatus(Constants.RESERVED_STATUS);
+                    bookRepository.save(bookEntity);
+                    BookReserveReturnModel bookReserveReturnModel=new BookReserveReturnModel();
+                    bookReserveReturnModel.setBookBarCode(bookReserveModel.getBookBarCode());
+                    bookReserveReturnModel.setBookStatus(BookStatus.Reserved);
+                }else{
                     throw new LibraryException(LibraryErrorMessages.INVALID_GIVEN_BARCODE);
                 }
-
-            } else {
-                throw new LibraryException(LibraryErrorMessages.SORRY_GIVEN_ACCOUNT_ID_WAS_CLOSED_ALREADY);
+            }else{
+                throw  new LibraryException(LibraryErrorMessages.SORRY_GIVEN_ACCOUNT_ID_WAS_CLOSED_ALREADY);
             }
 
-        } else {
+        }else{
             throw new LibraryException(LibraryErrorMessages.SORRY_GIVEN_ACCOUNTID_PASSWORD_INVALID);
         }
 
-        return bookReserveReturnModel;
+return null;
     }
-
-
 }
 

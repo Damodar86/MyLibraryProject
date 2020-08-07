@@ -17,4 +17,5 @@ public interface BookCheckOutRepository extends JpaRepository<BookCheckOutEntity
     Optional<BookCheckOutEntity>findByBookBarCode(String barCode);
     List<BookCheckOutEntity>findByBookBarCodeOrIssuedById(String barCode,String issuedBy);
     List<BookCheckOutEntity>findByBorrowedDateAndReturnedDateIsNull(LocalDate borrowedDate);
+    List<BookCheckOutEntity>findByRenewalDateIsBeforeAndReturnedDateIsNull(LocalDate renewalDate);
 }

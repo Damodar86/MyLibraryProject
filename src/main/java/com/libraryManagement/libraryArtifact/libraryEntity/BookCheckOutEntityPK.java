@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -18,5 +18,5 @@ public class BookCheckOutEntityPK implements Serializable {
     @Column(name = "BORRWOR_ACCOUNT_ID")
     private Long borrowerAccountId;
     @Column(name = "BORROWED_DATE")
-    private LocalDateTime borrowedDate;
+    private LocalDate borrowedDate;
 }

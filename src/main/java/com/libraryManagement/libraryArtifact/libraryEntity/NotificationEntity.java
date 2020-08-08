@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Setter
@@ -18,11 +18,11 @@ public class NotificationEntity {
     @Column(name = "ACCOUNT_ID")
     private Long accountId;
     @Column(name = "BORROWED_DATE")
-    private LocalDateTime borrowedDate;
+    private LocalDate borrowedDate;
     @Column(name = "RENEWAL_DATE")
-    private LocalDateTime renewalDate;
+    private LocalDate renewalDate;
     @Column(name = "NOTIFICATION_DATE")
-    private LocalDateTime notificationDate;
+    private LocalDate notificationDate;
     @Id
     @Column(name = "BOOK_BARCODE")
     private String bookBarCode ;

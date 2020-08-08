@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Setter
@@ -20,7 +20,7 @@ public class BookRenewalEntity {
     @Column(name = "BOOKBARCODE")
     private String barCode;
     @Column(name = "RENEWALDATE")
-    private LocalDateTime renewalDate;
+    private LocalDate renewalDate;
     @Column(name = "NEXTRENEWALDATE")
-    private LocalDateTime nextRenewalDate;
+    private LocalDate nextRenewalDate;
 }

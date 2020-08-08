@@ -11,7 +11,7 @@ import com.libraryManagement.libraryArtifact.libraryRepository.BookRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -31,8 +31,8 @@ public class BookReturnService {
         BookRe_ReturnModel bookRe_returnModel = new BookRe_ReturnModel();
         if (bookCheckOutEntity.isPresent()) {
             BookCheckOutEntity bookCheckOutEntity1 = bookCheckOutEntity.get();
-            bookCheckOutEntity1.setReturnedDate(LocalDateTime.now());
-            int daysPassedRenewalDate = LocalDateTime.now().compareTo(bookCheckOutEntity1.getRenewalDate());
+            bookCheckOutEntity1.setReturnedDate(LocalDate.now());
+            int daysPassedRenewalDate = LocalDate.now().compareTo(bookCheckOutEntity1.getRenewalDate());
             if (daysPassedRenewalDate > 0) {
 
                 bookCheckOutEntity1.setPenality(daysPassedRenewalDate * 10);

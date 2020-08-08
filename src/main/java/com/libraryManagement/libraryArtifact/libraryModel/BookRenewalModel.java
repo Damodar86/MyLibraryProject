@@ -2,7 +2,7 @@ package com.libraryManagement.libraryArtifact.libraryModel;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 @Setter
 @Getter
 @Builder

@@ -2,15 +2,16 @@ package com.libraryManagement.libraryArtifact.libraryModel;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Setter
 @Getter
 public class NotificationReturnModel {
     private Long accountId;
-    private LocalDateTime bookBorrowDate;
+    private LocalDate bookBorrowDate;
     private String message;
-    private LocalDateTime bookRenewalDate;
+    private LocalDate bookRenewalDate;
+    private String bookBarCode;
 
 
 }
